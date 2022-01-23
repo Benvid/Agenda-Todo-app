@@ -29,7 +29,7 @@ app.get("/",(req,res)=>{
     res.send("Welcome to Benvid Todo API")
 })
 //Get all Todos rout
-app.get("/getAllTodos",async(req,res)=>{
+app.get("/todos",async(req,res)=>{
     const todo= await TodoModel.find({});
 
     if (todo){
