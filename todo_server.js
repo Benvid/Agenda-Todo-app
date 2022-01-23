@@ -1,29 +1,28 @@
-import express from "express"
-import mongoose from "mongoose"
-import dotenv from "dotenv"
-import cors from "cors"
-import TodoModel from "./todoSchema/todoSchema.js"
+app.use(cors());
+app.use(express.json());
+app.get('/', function(req, res){
+  res.status(200).json({message: 'Welcome to isaac todo api'});
+});
+app.get('/todos', todoController.getAllTodos);
+app.post('/todos', todoController.addTodo);
+app.patch('/todos/:todoId', todoController.updateTodoById);
+app.delete('/todos/:todoId', todoController.deleteTodoById);
+app.get('/todos/:todoId', todoController.getTodoById);
 
-const app = express()
-
-dotenv.config()
-
-const port =  process.env.PORT||7000
-
-const url = process.env.DB_URL
-app.use(express.json())
-app.use(cors())
-
-mongoose.connect(url,{
+//listener
+app.listen(PORT, function(){
+  console.log('Server has started to run');
+  mongoose.connect(process.env.DB_URL,{
     useNewUrlParser: true,
-    useUnifiedTopology: true
-
-}).then(()=>{
-    console.log("Database connected successfully")
-}).catch((error)=>{
-    console.log(error)
-})
-
+    useUnifiedTopology: true,
+  })
+  .then(function(){
+    console.log('DB is connected');
+  })
+  .catch(function(error){
+    console.log('DB is not connected: ', error.message);
+  })
+});
 ///home route
 app.get("/",(req,res)=>{
     res.send("Welcome to Benvid Todo API")
